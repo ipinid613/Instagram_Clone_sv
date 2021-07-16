@@ -20,3 +20,7 @@
 
 * 회원가입 후 DB에 ```USER```테이블 저장 시, createdAt과 modifiedAt이 포함되지 않는 오류 발생
 ------
+## Version 0.0.2
+### 1. Version 0.0.1의 제한사항 해결
+
+* Timestamped 정상화
