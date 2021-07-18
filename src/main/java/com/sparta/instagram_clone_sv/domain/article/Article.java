@@ -24,9 +24,6 @@ public class Article extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Boolean enabled;
-
     @Column(columnDefinition = "TEXT",nullable = false)
     private String content;
 
@@ -37,40 +34,23 @@ public class Article extends Timestamped {
     @JoinColumn
     private User user;
 
-    @OneToMany(mappedBy = "article") // fetchtype eager로 해야지 디버그 가능해용 아닌가 아님말고...
+    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL) // fetchtype eager로 해야지 디버그 가능해용 아닌가 아님말고...
     private final List<Liked> likedList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final List<Comment> commentList = new ArrayList<>();
 
     @Builder
     public Article(String content, String imageUrl, User user) {
-        this.enabled = true;
         this.content = content;
         this.imageUrl = imageUrl;
         this.user = user;
     }
 
     public Article(ArticleCreateRequestDto articleCreateRequestDto, User user){
-        this.enabled = true;
         this.content = articleCreateRequestDto.getContent();
         this.imageUrl = articleCreateRequestDto.getImageUrl();
         this.user = user;
-    }
-
-    public void deActivate(){
-        if(this.enabled){
-            this.enabled = false;
-
-            for(Liked liked:likedList){
-                liked.deActivate();
-            }
-
-            for(Comment comment:commentList){
-                comment.deActivate();
-            }
-
-        }
     }
 
     public void update(ArticleUpdateRequestDto articleUpdateRequestDto){

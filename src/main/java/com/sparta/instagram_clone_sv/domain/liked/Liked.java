@@ -20,9 +20,6 @@ public class Liked extends Timestamped {
     @Id
     private Long id;
 
-    @Column(nullable = false)
-    private boolean enabled;
-
     @ManyToOne
     @JoinColumn(nullable = false)
     private User user;
@@ -33,15 +30,8 @@ public class Liked extends Timestamped {
 
     @Builder
     public Liked(User user, Article article) {
-        this.enabled = true;
         this.user = user;
         this.article = article;
-    }
-
-    public void deActivate(){
-        if(this.enabled){
-            this.enabled = false;
-        }
     }
 
 }

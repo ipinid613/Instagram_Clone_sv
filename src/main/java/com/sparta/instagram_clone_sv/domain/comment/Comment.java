@@ -21,9 +21,6 @@ public class Comment extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private Boolean enabled;
-
-    @Column(nullable = false)
     private String content;
 
     @ManyToOne
@@ -36,23 +33,15 @@ public class Comment extends Timestamped {
 
     @Builder
     public Comment(Boolean enabled, String content, Article article, User user) {
-        this.enabled = true;
         this.content = content;
         this.article = article;
         this.user = user;
     }
 
     public Comment(Article article, CommentCreateRequestDto commentCreateRequestDto, User user){
-        this.enabled = true;
         this.content = commentCreateRequestDto.getContent();
         this.article = article;
         this.user = user;
-    }
-
-    public void deActivate(){
-        if(this.enabled){
-            this.enabled = false;
-        }
     }
 
     public void update(CommentUpdateRequestDto commentUpdateRequestDto){
