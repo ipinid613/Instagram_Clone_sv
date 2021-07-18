@@ -1,7 +1,7 @@
 package com.sparta.instagram_clone_sv.security;
 
-import com.sparta.instagram_clone_sv.model.User;
-import com.sparta.instagram_clone_sv.repository.UserRepository;
+import com.sparta.instagram_clone_sv.domain.user.User;
+import com.sparta.instagram_clone_sv.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

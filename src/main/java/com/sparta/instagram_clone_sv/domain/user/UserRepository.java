@@ -1,6 +1,6 @@
-package com.sparta.instagram_clone_sv.repository;
+package com.sparta.instagram_clone_sv.domain.user;
 
-import com.sparta.instagram_clone_sv.model.User;
+import com.sparta.instagram_clone_sv.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

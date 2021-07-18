@@ -1,9 +1,9 @@
-package com.sparta.instagram_clone_sv.controller;
+package com.sparta.instagram_clone_sv.web;
 
-import com.sparta.instagram_clone_sv.dto.SignupRequestDto;
+import com.sparta.instagram_clone_sv.web.dto.SignupRequestDto;
 import com.sparta.instagram_clone_sv.exception.UserRequestException;
-import com.sparta.instagram_clone_sv.model.User;
-import com.sparta.instagram_clone_sv.repository.UserRepository;
+import com.sparta.instagram_clone_sv.domain.user.User;
+import com.sparta.instagram_clone_sv.domain.user.UserRepository;
 import com.sparta.instagram_clone_sv.security.JwtTokenProvider;
 import com.sparta.instagram_clone_sv.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor // final로 선언된 멤버 변수를 자동으로 생성합니다.
 @RestController // JSON으로 데이터를 주고받음을 선언합니다.
-public class UserController {
+public class UserApiController {
 
     private final UserService userService;
     private final UserRepository userRepository;

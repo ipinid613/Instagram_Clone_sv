@@ -1,4 +1,4 @@
-package com.sparta.instagram_clone_sv.model;
+package com.sparta.instagram_clone_sv.domain;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

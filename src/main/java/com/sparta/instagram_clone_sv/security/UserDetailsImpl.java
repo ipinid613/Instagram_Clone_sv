@@ -1,6 +1,6 @@
 package com.sparta.instagram_clone_sv.security;
 
-import com.sparta.instagram_clone_sv.model.User;
+import com.sparta.instagram_clone_sv.domain.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

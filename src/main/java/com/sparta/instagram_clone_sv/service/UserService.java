@@ -1,9 +1,9 @@
 package com.sparta.instagram_clone_sv.service;
 
-import com.sparta.instagram_clone_sv.dto.SignupRequestDto;
+import com.sparta.instagram_clone_sv.web.dto.SignupRequestDto;
 import com.sparta.instagram_clone_sv.exception.UserRequestException;
-import com.sparta.instagram_clone_sv.model.User;
-import com.sparta.instagram_clone_sv.repository.UserRepository;
+import com.sparta.instagram_clone_sv.domain.user.User;
+import com.sparta.instagram_clone_sv.domain.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,7 +12,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.Optional;
 
