@@ -92,7 +92,7 @@ public class UserService {
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
         /// 위의 조건을 다 통과한 경우에 한해 userRepository.save 가능함 ///
-        User user = new User(true, username, email, nickname, password);
+        User user = new User(username, email, nickname, password);
         userRepository.save(user);
     }
 }
