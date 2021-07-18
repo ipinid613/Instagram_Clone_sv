@@ -42,6 +42,15 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "user")
     private final List<Article> articleList = new ArrayList<>();
 
+    @Builder
+    public User(boolean enabled, String username, String email, String nickname, String password) {
+        this.enabled = true;
+        this.username = username;
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+    }
+
     public void deActivate(){
         if(this.enabled){
 
