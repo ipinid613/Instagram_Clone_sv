@@ -23,13 +23,13 @@ public class LikedService {
 
     @Transactional
     public void toggleLiked (Long articleId, User user){
-        Optional<Article> article = articleRepository.findByIdAndEnabled(articleId,true);
+        Optional<Article> article = articleRepository.findById(articleId);
 
         if(article.isPresent()){
-            Optional<Liked> liked = likedRepository.findByArticleAndUserAndEnabled(article.get(),user,true);
+            Optional<Liked> liked = likedRepository.findByArticleAndUser(article.get(),user);
 
             if(liked.isPresent()){
-                liked.get().deActivate();
+                likedRepository.delete(liked.get());
             }else{
                 likedRepository.save(Liked.builder()
                 .user(user)

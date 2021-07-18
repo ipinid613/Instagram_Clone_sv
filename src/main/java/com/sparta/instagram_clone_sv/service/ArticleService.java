@@ -29,7 +29,7 @@ public class ArticleService {
 
 
     public List<ArticleResponseDto> readArticles() {
-        List<Article> articles = articleRepository.findAllByEnabledOrderByCreatedAtDesc(true);
+        List<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc();
 
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class ArticleService {
 
 
     public ArticleResponseDto readArticle(Long articleId) {
-        Optional<Article> article = articleRepository.findByIdAndEnabled(articleId,true);
+        Optional<Article> article = articleRepository.findById(articleId);
 
         if(article.isPresent()){
             return new ArticleResponseDto(article.get());
@@ -53,7 +53,7 @@ public class ArticleService {
 
     @Transactional
     public ArticleResponseDto updateArticle(Long articleId, ArticleUpdateRequestDto articleUpdateRequestDto, User user) {
-        Optional<Article> article = articleRepository.findByIdAndEnabled(articleId,true);
+        Optional<Article> article = articleRepository.findById(articleId);
 
         if(article.isPresent()){
             if(article.get().getUser().getId().equals(user.getId())){
@@ -70,11 +70,11 @@ public class ArticleService {
 
     @Transactional
     public void deleteArticle(Long articleId, User user) {
-        Optional<Article> article = articleRepository.findByIdAndEnabled(articleId,true);
+        Optional<Article> article = articleRepository.findById(articleId);
 
         if(article.isPresent()){
             if(article.get().getUser().getId().equals(user.getId())){
-                article.get().deActivate();
+                articleRepository.delete(article.get());
             }else{
                 throw new IllegalArgumentException("로그인 한 사용자와 게시물 작성자가 다릅니다.");
             }

@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface LikedRepository extends JpaRepository<Liked, Long> {
-    Optional<Liked> findByArticleAndUserAndEnabled(Article article, User user, boolean b);
+    Optional<Liked> findByArticleAndUser(Article article, User user);
 }

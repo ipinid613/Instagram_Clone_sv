@@ -25,7 +25,7 @@ public class CommentService {
 
     public CommentResponseDto createComment(Long articleId, CommentCreateRequestDto commentCreateRequestDto, User user) {
 
-        Optional<Article> article = articleRepository.findByIdAndEnabled(articleId, true);
+        Optional<Article> article = articleRepository.findById(articleId);
 
         if (article.isPresent()) {
 
@@ -43,7 +43,7 @@ public class CommentService {
     @Transactional
     public CommentResponseDto updateComment(Long articleId, Long commentId, CommentUpdateRequestDto commentUpdateRequestDto, User user) {
 
-        Optional<Comment> comment = commentRepository.findByIdAndEnabled(commentId,true);
+        Optional<Comment> comment = commentRepository.findById(commentId);
 
         if (comment.isPresent()) {
             if(comment.get().getUser().getId().equals(user.getId())){
@@ -59,11 +59,11 @@ public class CommentService {
     }
 
     public void deleteComment(Long articleId, Long commentId, User user) {
-        Optional<Comment> comment = commentRepository.findByIdAndEnabled(commentId,true);
+        Optional<Comment> comment = commentRepository.findById(commentId);
 
         if(comment.isPresent()){
             if(comment.get().getUser().getId().equals(user.getId())){
-                comment.get().deActivate();
+                commentRepository.delete(comment.get());
             }else{
                 throw new IllegalArgumentException("로그인 한 사용자와 댓글 작성자가 다릅니다.");
             }

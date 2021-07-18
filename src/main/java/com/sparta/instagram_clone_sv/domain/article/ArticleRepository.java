@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
+
     List<Article> findAllByOrderByCreatedAtDesc();
-
-    List<Article> findAllByEnabledOrderByCreatedAtDesc(boolean b);
-
-    Optional<Article> findByIdAndEnabled(Long articleId, boolean b);
 }
