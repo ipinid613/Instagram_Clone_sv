@@ -8,8 +8,10 @@ import com.sparta.instagram_clone_sv.domain.comment.CommentRepository;
 import com.sparta.instagram_clone_sv.domain.user.User;
 import com.sparta.instagram_clone_sv.web.dto.comment.CommentCreateRequestDto;
 import com.sparta.instagram_clone_sv.web.dto.comment.CommentResponseDto;
+import com.sparta.instagram_clone_sv.web.dto.comment.CommentUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Optional;
@@ -38,5 +40,35 @@ public class CommentService {
         }
     }
 
+    @Transactional
+    public CommentResponseDto updateComment(Long articleId, Long commentId, CommentUpdateRequestDto commentUpdateRequestDto, User user) {
 
+        Optional<Comment> comment = commentRepository.findByIdAndEnabled(commentId,true);
+
+        if (comment.isPresent()) {
+            if(comment.get().getUser().getId().equals(user.getId())){
+                comment.get().update(commentUpdateRequestDto);
+            }else{
+                throw new IllegalArgumentException("로그인 한 사용자와 댓글 작성자가 다릅니다.");
+            }
+        } else {
+            throw new IllegalArgumentException("해당 댓글이 없습니다. id=" + commentId);
+        }
+
+        return new CommentResponseDto(comment.get());
+    }
+
+    public void deleteComment(Long articleId, Long commentId, User user) {
+        Optional<Comment> comment = commentRepository.findByIdAndEnabled(commentId,true);
+
+        if(comment.isPresent()){
+            if(comment.get().getUser().getId().equals(user.getId())){
+                comment.get().deActivate();
+            }else{
+                throw new IllegalArgumentException("로그인 한 사용자와 댓글 작성자가 다릅니다.");
+            }
+        }else{
+            throw new IllegalArgumentException("해당 댓글이 없습니다. id=" + commentId);
+        }
+    }
 }

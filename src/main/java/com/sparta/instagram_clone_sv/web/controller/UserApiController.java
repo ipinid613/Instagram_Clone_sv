@@ -6,6 +6,8 @@ import com.sparta.instagram_clone_sv.domain.user.User;
 import com.sparta.instagram_clone_sv.domain.user.UserRepository;
 import com.sparta.instagram_clone_sv.security.JwtTokenProvider;
 import com.sparta.instagram_clone_sv.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
@@ -19,8 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequiredArgsConstructor // final로 선언된 멤버 변수를 자동으로 생성합니다.
-@RestController // JSON으로 데이터를 주고받음을 선언합니다.
+@RequiredArgsConstructor
+@Api(value = "UserController")
+@RestController
 public class UserApiController {
 
     private final UserService userService;
@@ -30,7 +33,8 @@ public class UserApiController {
 
 
     // 회원 가입 요청 처리
-    @PostMapping("/user/signup")
+    @ApiOperation("회원가입")
+    @PostMapping("/api/signup")
     public void registerUser(@Valid @RequestBody SignupRequestDto signupRequestDto, Errors errors) {
         if (errors.hasErrors()) {
             userService.validateHandling(errors);

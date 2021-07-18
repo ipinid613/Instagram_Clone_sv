@@ -47,7 +47,7 @@ public class ArticleService {
         if(article.isPresent()){
             return new ArticleResponseDto(article.get());
         }else{
-
+            throw new IllegalArgumentException("해당 게시글이 없습니다. id=" + articleId);
         }
     }
 

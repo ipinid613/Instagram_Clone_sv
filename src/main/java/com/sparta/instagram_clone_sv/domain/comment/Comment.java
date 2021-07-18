@@ -4,6 +4,7 @@ import com.sparta.instagram_clone_sv.domain.Timestamped;
 import com.sparta.instagram_clone_sv.domain.article.Article;
 import com.sparta.instagram_clone_sv.domain.user.User;
 import com.sparta.instagram_clone_sv.web.dto.comment.CommentCreateRequestDto;
+import com.sparta.instagram_clone_sv.web.dto.comment.CommentUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,6 +53,10 @@ public class Comment extends Timestamped {
         if(this.enabled){
             this.enabled = false;
         }
+    }
+
+    public void update(CommentUpdateRequestDto commentUpdateRequestDto){
+        this.content = commentUpdateRequestDto.getContent();
     }
 }
 
