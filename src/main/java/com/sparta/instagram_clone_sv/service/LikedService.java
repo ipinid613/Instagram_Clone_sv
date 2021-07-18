@@ -26,17 +26,19 @@ public class LikedService {
         Optional<Article> article = articleRepository.findByIdAndEnabled(articleId,true);
 
         if(article.isPresent()){
+            Optional<Liked> liked = likedRepository.findByArticleAndUserAndEnabled(article.get(),user,true);
 
-        }
-        Optional<Liked> liked = likedRepository.findByArticleAndUserAndEnabled(article,user,true);
+            if(liked.isPresent()){
+                liked.get().deActivate();
+            }else{
+                likedRepository.save(Liked.builder()
+                .user(user)
+                .article(article.get())
+                .build());
+            }
 
-        if(liked.isPresent()){
-            liked.get().deActivate();
         }else{
-            likedRepository.save(Liked.builder()
-            .article(article)
-            .user(user)
-            .build());
+            throw new IllegalArgumentException("해당 게시글이 없습니다. id=" + articleId);
         }
     }
 }
