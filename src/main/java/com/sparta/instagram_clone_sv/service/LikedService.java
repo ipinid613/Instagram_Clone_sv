@@ -22,7 +22,7 @@ public class LikedService {
     private final ArticleRepository articleRepository;
 
     @Transactional
-    public void toggleLiked (Long articleId, User user){
+    public Boolean toggleLiked (Long articleId, User user){
         Optional<Article> article = articleRepository.findById(articleId);
 
         if(article.isPresent()){
@@ -30,11 +30,13 @@ public class LikedService {
 
             if(liked.isPresent()){
                 likedRepository.delete(liked.get());
+                return false;
             }else{
                 likedRepository.save(Liked.builder()
                 .user(user)
                 .article(article.get())
                 .build());
+                return true;
             }
 
         }else{

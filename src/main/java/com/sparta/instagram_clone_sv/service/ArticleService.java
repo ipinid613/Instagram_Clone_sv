@@ -2,6 +2,8 @@ package com.sparta.instagram_clone_sv.service;
 
 import com.sparta.instagram_clone_sv.domain.article.Article;
 import com.sparta.instagram_clone_sv.domain.article.ArticleRepository;
+import com.sparta.instagram_clone_sv.domain.liked.Liked;
+import com.sparta.instagram_clone_sv.domain.liked.LikedRepository;
 import com.sparta.instagram_clone_sv.domain.user.User;
 import com.sparta.instagram_clone_sv.web.dto.article.ArticleCreateRequestDto;
 import com.sparta.instagram_clone_sv.web.dto.article.ArticleResponseDto;
@@ -19,12 +21,13 @@ import java.util.Optional;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final LikedRepository likedRepository;
 
 
     public ArticleResponseDto createArticle(ArticleCreateRequestDto articleCreateRequestDto, User user) {
         Article article = new Article(articleCreateRequestDto,user);
         articleRepository.save(article);
-        return new ArticleResponseDto(article);
+        return new ArticleResponseDto(article, 0L);
     }
 
 
@@ -34,7 +37,10 @@ public class ArticleService {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
 
         for (Article article : articles) {
-            articleResponseDtoList.add(new ArticleResponseDto(article));
+            Long likeCount = 0L;
+            List<Liked> likedList = likedRepository.findAllByArticle(article);
+            likeCount = (long) likedList.size();
+            articleResponseDtoList.add(new ArticleResponseDto(article,likeCount));
         }
 
         return articleResponseDtoList;
@@ -45,7 +51,10 @@ public class ArticleService {
         Optional<Article> article = articleRepository.findById(articleId);
 
         if(article.isPresent()){
-            return new ArticleResponseDto(article.get());
+            Long likeCount = 0L;
+            List<Liked> likedList = likedRepository.findAllByArticle(article.get());
+            likeCount = (long) likedList.size();
+            return new ArticleResponseDto(article.get(),likeCount);
         }else{
             throw new IllegalArgumentException("해당 게시글이 없습니다. id=" + articleId);
         }
@@ -55,9 +64,16 @@ public class ArticleService {
     public ArticleResponseDto updateArticle(Long articleId, ArticleUpdateRequestDto articleUpdateRequestDto, User user) {
         Optional<Article> article = articleRepository.findById(articleId);
 
+
+
         if(article.isPresent()){
             if(article.get().getUser().getId().equals(user.getId())){
                 article.get().update(articleUpdateRequestDto);
+
+                Long likeCount = 0L;
+                List<Liked> likedList = likedRepository.findAllByArticle(article.get());
+                likeCount = (long) likedList.size();
+                return new ArticleResponseDto(article.get(),likeCount);
             }else{
              throw new IllegalArgumentException("로그인 한 사용자와 게시물 작성자가 다릅니다.");
             }
@@ -65,7 +81,7 @@ public class ArticleService {
             throw new IllegalArgumentException("해당 게시글이 없습니다. id=" + articleId);
         }
 
-        return new ArticleResponseDto(article.get());
+
     }
 
     @Transactional

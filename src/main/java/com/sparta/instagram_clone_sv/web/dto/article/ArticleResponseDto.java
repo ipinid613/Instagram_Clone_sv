@@ -20,6 +20,8 @@ public class ArticleResponseDto {
     private final String authorProfileImageUrl;
     private final Long articleId;
 
+    private final Long likeCount;
+
     private final List<CommentResponseDto> comments = new ArrayList<>();
 
 //    @Builder
@@ -34,7 +36,7 @@ public class ArticleResponseDto {
 //        this.comments = comments;
 //    }
 
-    public ArticleResponseDto(Article article){
+    public ArticleResponseDto(Article article, Long likeCount){
         this.createdAt = article.getCreatedAt();
         this.modifiedAt = article.getModifiedAt();
         this.imageUrl = article.getImageUrl();
@@ -42,6 +44,7 @@ public class ArticleResponseDto {
         this.author = article.getUser().getNickname();
         this.authorProfileImageUrl = article.getUser().getProfileImageUrl();
         this.articleId = article.getId();
+        this.likeCount = likeCount;
 
         for(Comment comment:article.getCommentList()){
             this.comments.add(new CommentResponseDto(comment));
