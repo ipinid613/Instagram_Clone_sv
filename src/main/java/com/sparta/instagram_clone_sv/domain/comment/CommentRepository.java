@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 
-    Optional<Comment> findByIdAndEnabled(Long commentId, boolean b);
+//    Optional<Comment> findByIdAndEnabled(Long commentId, boolean b);
 }
