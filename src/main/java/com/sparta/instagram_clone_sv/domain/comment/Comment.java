@@ -32,7 +32,7 @@ public class Comment extends Timestamped {
     private User user;
 
     @Builder
-    public Comment(Boolean enabled, String content, Article article, User user) {
+    public Comment(String content, Article article, User user) {
         this.content = content;
         this.article = article;
         this.user = user;

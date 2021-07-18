@@ -47,7 +47,7 @@ public class User extends Timestamped {
     private final List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    public User(boolean enabled, String username, String email, String nickname, String password) {
+    public User(String username, String email, String nickname, String password) {
         this.username = username;
         this.email = email;
         this.nickname = nickname;
