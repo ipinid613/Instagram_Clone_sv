@@ -7,6 +7,11 @@ build/
 ## custom .gitignore ##
 /src/main/resources/application.properties
 
+### custom .gitignore ###
+src/main/resources/application.properties
+
+
+
 ### STS ###
 .apt_generated
 .classpath
