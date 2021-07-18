@@ -1,5 +1,6 @@
 package com.sparta.instagram_clone_sv.web.dto.comment;
 
+import com.sparta.instagram_clone_sv.domain.comment.Comment;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +15,18 @@ public class CommentResponseDto {
     private final String commentAuthor;
     private final String commentAuthorProfileImageUrl;
 
-    @Builder
-    public CommentResponseDto(LocalDateTime createdAt, LocalDateTime modifiedAt, String commentAuthor, String commentAuthorProfileImageUrl) {
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.commentAuthor = commentAuthor;
-        this.commentAuthorProfileImageUrl = commentAuthorProfileImageUrl;
+//    @Builder
+//    public CommentResponseDto(LocalDateTime createdAt, LocalDateTime modifiedAt, String commentAuthor, String commentAuthorProfileImageUrl) {
+//        this.createdAt = createdAt;
+//        this.modifiedAt = modifiedAt;
+//        this.commentAuthor = commentAuthor;
+//        this.commentAuthorProfileImageUrl = commentAuthorProfileImageUrl;
+//    }
+
+    public CommentResponseDto(Comment comment){
+        this.createdAt = comment.getCreatedAt();
+        this.modifiedAt = comment.getModifiedAt();
+        this.commentAuthor = comment.getUser().getNickname();
+        this.commentAuthorProfileImageUrl = comment.getUser().getProfileImageUrl();
     }
 }

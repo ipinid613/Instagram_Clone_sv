@@ -1,4 +1,4 @@
-package com.sparta.instagram_clone_sv.web;
+package com.sparta.instagram_clone_sv.web.controller;
 
 import com.sparta.instagram_clone_sv.web.dto.SignupRequestDto;
 import com.sparta.instagram_clone_sv.exception.UserRequestException;

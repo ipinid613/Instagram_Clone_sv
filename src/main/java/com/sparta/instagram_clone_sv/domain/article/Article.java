@@ -1,8 +1,11 @@
 package com.sparta.instagram_clone_sv.domain.article;
 
 import com.sparta.instagram_clone_sv.domain.Timestamped;
+import com.sparta.instagram_clone_sv.domain.comment.Comment;
 import com.sparta.instagram_clone_sv.domain.user.User;
 import com.sparta.instagram_clone_sv.domain.liked.Liked;
+import com.sparta.instagram_clone_sv.web.dto.article.ArticleCreateRequestDto;
+import com.sparta.instagram_clone_sv.web.dto.article.ArticleUpdateRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,11 +40,21 @@ public class Article extends Timestamped {
     @OneToMany(mappedBy = "article") // fetchtype eager로 해야지 디버그 가능해용 아닌가 아님말고...
     private final List<Liked> likedList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "article")
+    private final List<Comment> commentList = new ArrayList<>();
+
     @Builder
     public Article(String content, String imageUrl, User user) {
         this.enabled = true;
         this.content = content;
         this.imageUrl = imageUrl;
+        this.user = user;
+    }
+
+    public Article(ArticleCreateRequestDto articleCreateRequestDto, User user){
+        this.enabled = true;
+        this.content = articleCreateRequestDto.getContent();
+        this.imageUrl = articleCreateRequestDto.getImageUrl();
         this.user = user;
     }
 
@@ -52,6 +65,15 @@ public class Article extends Timestamped {
             for(Liked liked:likedList){
                 liked.deActivate();
             }
+
+            for(Comment comment:commentList){
+                comment.deActivate();
+            }
+
         }
+    }
+
+    public void update(ArticleUpdateRequestDto articleUpdateRequestDto){
+        this.content = articleUpdateRequestDto.getContent();
     }
 }

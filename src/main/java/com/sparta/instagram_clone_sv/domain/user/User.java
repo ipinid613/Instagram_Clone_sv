@@ -1,6 +1,7 @@
 package com.sparta.instagram_clone_sv.domain.user;
 
 import com.sparta.instagram_clone_sv.domain.article.Article;
+import com.sparta.instagram_clone_sv.domain.comment.Comment;
 import com.sparta.instagram_clone_sv.domain.liked.Liked;
 import com.sparta.instagram_clone_sv.domain.Timestamped;
 import lombok.*;
@@ -36,11 +37,17 @@ public class User extends Timestamped {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = true)
+    private String profileImageUrl;
+
     @OneToMany(mappedBy = "user")
     private final List<Liked> likedList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private final List<Article> articleList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private final List<Comment> commentList = new ArrayList<>();
 
     @Builder
     public User(boolean enabled, String username, String email, String nickname, String password) {
@@ -49,6 +56,9 @@ public class User extends Timestamped {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
+
+        //Here should Default profile imageUrl
+        this.profileImageUrl = null;
     }
 
     public void deActivate(){
@@ -62,6 +72,10 @@ public class User extends Timestamped {
 
             for(Liked liked:likedList){
                 liked.deActivate();
+            }
+
+            for(Comment comment:commentList){
+                comment.deActivate();
             }
         }
     }
