@@ -34,7 +34,7 @@ public class UserApiController {
 
     // 회원 가입 요청 처리
     @ApiOperation("회원가입")
-    @PostMapping("/api/signup")
+    @PostMapping("/signup")
     public void registerUser(@Valid @RequestBody SignupRequestDto signupRequestDto, Errors errors) {
         if (errors.hasErrors()) {
             userService.validateHandling(errors);
@@ -43,7 +43,7 @@ public class UserApiController {
     }
 
     // 로그인
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public List<Map<String,String>> login(@RequestBody Map<String, String> user) {
         User member = userRepository.findByUsername(user.get("username"))
                 .orElseThrow(() -> new UserRequestException("가입되지 않은 회원입니다."));
