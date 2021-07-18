@@ -1,4 +1,4 @@
-package com.sparta.instagram_clone_sv.web.dto;
+package com.sparta.instagram_clone_sv.web.dto.signUp;
 
 import lombok.*;
 
