@@ -53,6 +53,9 @@ public class UserService {
 
     // 회원가입
     public void registerUser(@Valid @RequestBody SignupRequestDto signupRequestDto) {
+        // 회원 닉네임(활동명) 입력
+        String nickname = signupRequestDto.getNickname();
+        // 유저명 입력
         String username = signupRequestDto.getUsername();
         String errorMessage;
         // 중복 이메일 확인
@@ -61,12 +64,7 @@ public class UserService {
             errorMessage = "중복된 email이 존재합니다.";
             throw new UserRequestException(errorMessage);
         }
-        // 회원 실명 중복 확인
-        String realname = signupRequestDto.getRealname();
-        if (userRepository.findByRealname(realname).isPresent()) {
-            errorMessage = "중복된 실명이 존재합니다.";
-            throw new UserRequestException(errorMessage);
-        }
+
         // 회원 ID 중복 확인
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
@@ -84,30 +82,18 @@ public class UserService {
             errorMessage = "이메일을 포함한 비밀번호는 사용불가합니다.";
             throw new UserRequestException(errorMessage);
         }
-        // 패스워드 속에 실명 중복 없애기
-        if(signupRequestDto.getPassword().contains(realname) || realname.contains(signupRequestDto.getPassword())) {
-            errorMessage = "실명을 포함한 비밀번호는 사용불가합니다.";
+        // 패스워드 속에 닉네임 중복 없애기
+        if(signupRequestDto.getPassword().contains(nickname) || nickname.contains(signupRequestDto.getPassword())) {
+            errorMessage = "닉네임을 포함한 비밀번호는 사용불가합니다.";
             throw new UserRequestException(errorMessage);
         }
 
-        ////////// 비밀번호 재확인(클론코딩 상 요구사항 아니므로 삭제 //////////
-//        if (!signupRequestDto.getPassword().equals(signupRequestDto.getRepassword())) {
-//            errorMessage = "비밀번호가 일치하지 않습니다.";
-//            throw new UserRequestException(errorMessage);
-//        }
         // 패스워드 인코딩
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
         /// 위의 조건을 다 통과한 경우에 한해 userRepository.save 가능함 ///
-        User user = new User(email, realname, username, password);
+        User user = new User(true, username, email, nickname, password);
         userRepository.save(user);
     }
-
-    ////// 유저 비밀번호 변경(update) 관련 부분 //////
-//    @Transactional
-//    public void update(String newPass, User user){
-//        user.setPassword(passwordEncoder.encode(newPass));
-//        userRepository.save(user);
-//    }
 }
 
