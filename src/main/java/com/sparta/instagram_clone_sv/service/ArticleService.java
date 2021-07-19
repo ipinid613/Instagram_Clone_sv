@@ -12,6 +12,8 @@ import com.sparta.instagram_clone_sv.web.dto.article.ArticleUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,5 +93,12 @@ public class ArticleService {
         }
     }
 
+    public void validateHandling(Errors errors) {
+        String errorMessage;
+        for (FieldError error : errors.getFieldErrors()) {
+            errorMessage = error.getDefaultMessage(); // getField() 로 하면 defaultmessage 출력 불가함. getDefaultMesasge로 해야해요!
+            throw new ArticleRequestException(errorMessage);
+        }
+    }
 
 }
