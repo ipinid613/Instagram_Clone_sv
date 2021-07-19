@@ -2,6 +2,7 @@ package com.sparta.instagram_clone_sv.domain.user;
 
 import com.sparta.instagram_clone_sv.domain.article.Article;
 import com.sparta.instagram_clone_sv.domain.comment.Comment;
+import com.sparta.instagram_clone_sv.domain.follow.Follow;
 import com.sparta.instagram_clone_sv.domain.liked.Liked;
 import com.sparta.instagram_clone_sv.domain.Timestamped;
 import lombok.*;
@@ -45,6 +46,12 @@ public class User extends Timestamped {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private final List<Comment> commentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "follower",cascade = CascadeType.ALL)
+    private final List<Follow> followerList = new ArrayList<>(); //내가 팔로우를 하는 유저들의 리스트
+
+    @OneToMany(mappedBy = "followee",cascade = CascadeType.ALL)
+    private final List<Follow> followeeList = new ArrayList<>(); //나를 팔로우 하는 유저들의 리스트
 
     @Builder
     public User(String username, String email, String nickname, String password) {
