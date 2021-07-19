@@ -36,7 +36,7 @@ public class ArticleResponseDto {
 //        this.comments = comments;
 //    }
 
-    public ArticleResponseDto(Article article, Long likeCount){
+    public ArticleResponseDto(Article article){
         this.createdAt = article.getCreatedAt();
         this.modifiedAt = article.getModifiedAt();
         this.imageUrl = article.getImageUrl();
@@ -44,7 +44,7 @@ public class ArticleResponseDto {
         this.author = article.getUser().getNickname();
         this.authorProfileImageUrl = article.getUser().getProfileImageUrl();
         this.articleId = article.getId();
-        this.likeCount = likeCount;
+        this.likeCount = (long)article.getLikedList().size();
 
         for(Comment comment:article.getCommentList()){
             this.comments.add(new CommentResponseDto(comment));

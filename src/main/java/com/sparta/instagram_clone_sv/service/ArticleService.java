@@ -27,7 +27,7 @@ public class ArticleService {
     public ArticleResponseDto createArticle(ArticleCreateRequestDto articleCreateRequestDto, User user) {
         Article article = new Article(articleCreateRequestDto,user);
         articleRepository.save(article);
-        return new ArticleResponseDto(article, 0L);
+        return new ArticleResponseDto(article);
     }
 
 
@@ -37,10 +37,7 @@ public class ArticleService {
         List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
 
         for (Article article : articles) {
-            Long likeCount = 0L;
-            List<Liked> likedList = likedRepository.findAllByArticle(article);
-            likeCount = (long) likedList.size();
-            articleResponseDtoList.add(new ArticleResponseDto(article,likeCount));
+            articleResponseDtoList.add(new ArticleResponseDto(article));
         }
 
         return articleResponseDtoList;
@@ -51,10 +48,7 @@ public class ArticleService {
         Optional<Article> article = articleRepository.findById(articleId);
 
         if(article.isPresent()){
-            Long likeCount = 0L;
-            List<Liked> likedList = likedRepository.findAllByArticle(article.get());
-            likeCount = (long) likedList.size();
-            return new ArticleResponseDto(article.get(),likeCount);
+            return new ArticleResponseDto(article.get());
         }else{
             throw new IllegalArgumentException("해당 게시글이 없습니다. id=" + articleId);
         }
@@ -70,10 +64,7 @@ public class ArticleService {
             if(article.get().getUser().getId().equals(user.getId())){
                 article.get().update(articleUpdateRequestDto);
 
-                Long likeCount = 0L;
-                List<Liked> likedList = likedRepository.findAllByArticle(article.get());
-                likeCount = (long) likedList.size();
-                return new ArticleResponseDto(article.get(),likeCount);
+                return new ArticleResponseDto(article.get());
             }else{
              throw new IllegalArgumentException("로그인 한 사용자와 게시물 작성자가 다릅니다.");
             }

@@ -13,6 +13,7 @@ public class CommentResponseDto {
     private final String commentAuthorProfileImageUrl;
     private final Long articleId;
     private final Long commentId;
+    private final String content;
 
 //    @Builder
 //    public CommentResponseDto(LocalDateTime createdAt, LocalDateTime modifiedAt, String commentAuthor, String commentAuthorProfileImageUrl) {
@@ -25,6 +26,7 @@ public class CommentResponseDto {
     public CommentResponseDto(Comment comment){
         this.articleId = comment.getArticle().getId();
         this.commentId = comment.getId();
+        this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
         this.commentAuthor = comment.getUser().getNickname();

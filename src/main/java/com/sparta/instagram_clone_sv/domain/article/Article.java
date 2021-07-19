@@ -34,7 +34,7 @@ public class Article extends Timestamped {
     @JoinColumn
     private User user;
 
-    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL) // fetchtype eager로 해야지 디버그 가능해용 아닌가 아님말고...
+    @OneToMany(mappedBy = "article",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = false) // fetchtype eager로 해야지 디버그 가능해용 아닌가 아님말고...
     private final List<Liked> likedList = new ArrayList<>();
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
