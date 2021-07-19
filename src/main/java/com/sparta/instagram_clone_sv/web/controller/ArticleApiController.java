@@ -10,8 +10,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(value = "ArticleApiController")
@@ -24,7 +26,10 @@ public class ArticleApiController {
 
     @ApiOperation("게시물 작성")
     @PostMapping("/api/articles")
-    public ArticleResponseDto createArticle(@RequestBody ArticleCreateRequestDto articleCreateRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ArticleResponseDto createArticle(@Valid @RequestBody ArticleCreateRequestDto articleCreateRequestDto, Errors errors, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        if (errors.hasErrors()) {
+            articleService.validateHandling(errors);
+        }
         return articleService.createArticle(articleCreateRequestDto,userDetails.getUser());
     }
 
