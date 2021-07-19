@@ -37,6 +37,4 @@ public class CommentApiController {
     public void deleteComment(@PathVariable Long articleId, @PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         commentService.deleteComment(articleId, commentId, userDetails.getUser());
     }
-
-
 }

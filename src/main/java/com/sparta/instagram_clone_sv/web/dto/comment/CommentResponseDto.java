@@ -14,6 +14,7 @@ public class CommentResponseDto {
     private final LocalDateTime modifiedAt;
     private final String commentAuthor;
     private final String commentAuthorProfileImageUrl;
+    private final Long articleId;
 
 //    @Builder
 //    public CommentResponseDto(LocalDateTime createdAt, LocalDateTime modifiedAt, String commentAuthor, String commentAuthorProfileImageUrl) {
@@ -24,6 +25,7 @@ public class CommentResponseDto {
 //    }
 
     public CommentResponseDto(Comment comment){
+        this.articleId = comment.getArticle().getId();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
         this.commentAuthor = comment.getUser().getNickname();
