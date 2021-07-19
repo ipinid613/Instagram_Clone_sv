@@ -6,12 +6,15 @@ import com.sparta.instagram_clone_sv.domain.article.ArticleRepository;
 import com.sparta.instagram_clone_sv.domain.comment.Comment;
 import com.sparta.instagram_clone_sv.domain.comment.CommentRepository;
 import com.sparta.instagram_clone_sv.domain.user.User;
+import com.sparta.instagram_clone_sv.exception.ArticleRequestException;
 import com.sparta.instagram_clone_sv.web.dto.comment.CommentCreateRequestDto;
 import com.sparta.instagram_clone_sv.web.dto.comment.CommentResponseDto;
 import com.sparta.instagram_clone_sv.web.dto.comment.CommentUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 
 import java.util.Optional;
@@ -69,6 +72,14 @@ public class CommentService {
             }
         }else{
             throw new IllegalArgumentException("해당 댓글이 없습니다. id=" + commentId);
+        }
+    }
+
+    public void validateHandling(Errors errors) {
+        String errorMessage;
+        for (FieldError error : errors.getFieldErrors()) {
+            errorMessage = error.getDefaultMessage(); // getField() 로 하면 defaultmessage 출력 불가함. getDefaultMesasge로 해야해요!
+            throw new ArticleRequestException(errorMessage);
         }
     }
 }
