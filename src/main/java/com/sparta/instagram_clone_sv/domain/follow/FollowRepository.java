@@ -1,4 +1,6 @@
 package com.sparta.instagram_clone_sv.domain.follow;
 
-public interface FollowRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FollowRepository extends JpaRepository<Follow,Long> {
 }
