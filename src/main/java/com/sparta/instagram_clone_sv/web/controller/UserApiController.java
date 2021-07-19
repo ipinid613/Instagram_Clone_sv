@@ -45,18 +45,34 @@ public class UserApiController {
     // 로그인
     @PostMapping("/api/login")
     public List<Map<String,String>> login(@RequestBody Map<String, String> user) {
-        User member = userRepository.findByUsername(user.get("username"))
-                .orElseThrow(() -> new UserRequestException("가입되지 않은 회원입니다."));
-        if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
-            throw new UserRequestException("잘못된 비밀번호입니다.");
+        if (user.get("usernameOrEmail").contains("@")) {
+            User member = userRepository.findByEmail(user.get("usernameOrEmail")).
+                    orElseThrow(() -> new UserRequestException("입력하신 이메일로 회원을 찾을 수 없습니다."));
+            if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
+                throw new UserRequestException("잘못된 비밀번호입니다.");
+            }
+            Map<String,String>username =new HashMap<>();
+            Map<String,String>token = new HashMap<>();
+            List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
+            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "username" : {username}
+            username.put("username",member.getUsername()); // "token" : {token}
+            tu.add(username); //List형태 ["username" : {username}]
+            tu.add(token); //List형태 ["token" : {token}]
+            return tu; // List형태 ["username" : {username}, "token" : {token}]
+        } else {
+            User member = userRepository.findByUsername(user.get("usernameOrEmail"))
+                    .orElseThrow(() -> new UserRequestException("입력하신 유저명으로 회원을 찾을 수 없습니다."));
+            if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
+                throw new UserRequestException("잘못된 비밀번호입니다.");
+            }
+            Map<String,String>username =new HashMap<>();
+            Map<String,String>token = new HashMap<>();
+            List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
+            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "username" : {username}
+            username.put("username",member.getUsername()); // "token" : {token}
+            tu.add(username); //List형태 ["username" : {username}]
+            tu.add(token); //List형태 ["token" : {token}]
+            return tu; // List형태 ["username" : {username}, "token" : {token}]
         }
-        Map<String,String>username =new HashMap<>();
-        Map<String,String>token = new HashMap<>();
-        List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
-        token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "username" : {username}
-        username.put("username",member.getUsername()); // "token" : {token}
-        tu.add(username); //List형태 ["username" : {username}]
-        tu.add(token); //List형태 ["token" : {token}]
-        return tu; // List형태 ["username" : {username}, "token" : {token}]
     }
 }
