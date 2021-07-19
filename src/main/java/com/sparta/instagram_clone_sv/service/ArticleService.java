@@ -5,6 +5,7 @@ import com.sparta.instagram_clone_sv.domain.article.ArticleRepository;
 import com.sparta.instagram_clone_sv.domain.liked.Liked;
 import com.sparta.instagram_clone_sv.domain.liked.LikedRepository;
 import com.sparta.instagram_clone_sv.domain.user.User;
+import com.sparta.instagram_clone_sv.exception.ArticleRequestException;
 import com.sparta.instagram_clone_sv.web.dto.article.ArticleCreateRequestDto;
 import com.sparta.instagram_clone_sv.web.dto.article.ArticleResponseDto;
 import com.sparta.instagram_clone_sv.web.dto.article.ArticleUpdateRequestDto;
@@ -56,7 +57,7 @@ public class ArticleService {
             likeCount = (long) likedList.size();
             return new ArticleResponseDto(article.get(),likeCount);
         }else{
-            throw new IllegalArgumentException("해당 게시글이 없습니다. id=" + articleId);
+            throw new ArticleRequestException("해당 게시글이 없습니다. id=" + articleId);
         }
     }
 
@@ -75,10 +76,10 @@ public class ArticleService {
                 likeCount = (long) likedList.size();
                 return new ArticleResponseDto(article.get(),likeCount);
             }else{
-             throw new IllegalArgumentException("로그인 한 사용자와 게시물 작성자가 다릅니다.");
+             throw new ArticleRequestException("로그인 한 사용자와 게시물 작성자가 다릅니다.");
             }
         }else{
-            throw new IllegalArgumentException("해당 게시글이 없습니다. id=" + articleId);
+            throw new ArticleRequestException("해당 게시글이 없습니다. id=" + articleId);
         }
 
 
@@ -92,10 +93,10 @@ public class ArticleService {
             if(article.get().getUser().getId().equals(user.getId())){
                 articleRepository.delete(article.get());
             }else{
-                throw new IllegalArgumentException("로그인 한 사용자와 게시물 작성자가 다릅니다.");
+                throw new ArticleRequestException("로그인 한 사용자와 게시물 작성자가 다릅니다.");
             }
         }else{
-            throw new IllegalArgumentException("해당 게시글이 없습니다. id=" + articleId);
+            throw new ArticleRequestException("해당 게시글이 없습니다. id=" + articleId);
         }
     }
 
