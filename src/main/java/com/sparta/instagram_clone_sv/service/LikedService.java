@@ -29,10 +29,9 @@ public class LikedService {
         if (article.isPresent()) {
             for (Liked liked : article.get().getLikedList()) {
                 if (liked.getUser().getId().equals(user.getId())) {
-
                     article.get().getLikedList().remove(liked);
+                    liked.disconnectArticle();
                     likedRepository.delete(liked);
-
                     return false;
                 }
             }

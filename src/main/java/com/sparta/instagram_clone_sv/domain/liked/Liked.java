@@ -34,4 +34,8 @@ public class Liked extends Timestamped {
         this.article = article;
     }
 
+    public void disconnectArticle(){
+        this.article = null;
+    }
+
 }

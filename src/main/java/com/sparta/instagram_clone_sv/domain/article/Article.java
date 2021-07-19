@@ -56,4 +56,23 @@ public class Article extends Timestamped {
     public void update(ArticleUpdateRequestDto articleUpdateRequestDto){
         this.content = articleUpdateRequestDto.getContent();
     }
+
+//    public Boolean removeLiked(Liked liked){
+//        if(liked!=null){
+//            if(liked.getArticle()!=null){
+//                if(liked.getArticle().equals(this)){
+//                    this.likedList.remove(liked);
+//                    liked.disconnectArticle();
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//
+////        if(liked.getArticle().equals(this)){
+////            this.likedList.remove(liked);
+////            liked.
+////        }
+//
+//    }
 }
