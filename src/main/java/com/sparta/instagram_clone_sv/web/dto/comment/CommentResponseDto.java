@@ -32,4 +32,14 @@ public class CommentResponseDto {
         this.commentAuthor = comment.getUser().getNickname();
         this.commentAuthorProfileImageUrl = comment.getUser().getProfileImageUrl();
     }
+
+    public CommentResponseDto(Long articleId, Long commentId, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String commentAuthor, String commentAuthorProfileImageUrl){
+        this.articleId = articleId;
+        this.commentId = commentId;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.commentAuthor = commentAuthor;
+        this.commentAuthorProfileImageUrl = commentAuthorProfileImageUrl;
+    }
 }
