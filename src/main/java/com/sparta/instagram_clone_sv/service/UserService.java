@@ -2,6 +2,10 @@ package com.sparta.instagram_clone_sv.service;
 
 import com.sparta.instagram_clone_sv.domain.userInfo.UserInfo;
 import com.sparta.instagram_clone_sv.domain.userInfo.UserInfoRepository;
+import com.sparta.instagram_clone_sv.security.UserDetailsImpl;
+import com.sparta.instagram_clone_sv.web.dto.ProfileUpdate.ProfileReadResponseDto;
+import com.sparta.instagram_clone_sv.web.dto.ProfileUpdate.ProfileUpdateRequestDto;
+import com.sparta.instagram_clone_sv.web.dto.ProfileUpdate.ProfileUpdateResponseDto;
 import com.sparta.instagram_clone_sv.web.dto.signUp.SignupRequestDto;
 import com.sparta.instagram_clone_sv.exception.UserRequestException;
 import com.sparta.instagram_clone_sv.domain.user.User;
@@ -99,6 +103,28 @@ public class UserService {
         /// 위의 조건을 다 통과한 경우에 한해 userRepository.save 가능함 ///
         User user = new User(username, email, nickname, password, emptyUserInfo);
         userRepository.save(user);
+    }
+
+    //프로필 수정페이지 진입//
+    public ProfileReadResponseDto readProfile(UserDetailsImpl userDetails){
+        Optional<User> found = userRepository.findByUsername(userDetails.getUsername());
+        if (found.isPresent()){
+            return new ProfileReadResponseDto(found.get());
+        } else {
+            throw new UserRequestException("해당 유저가 없습니다. id=" + userDetails.getUser().getId());
+        }
+    }
+
+    //프로필 수정//
+    @Transactional
+    public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, UserDetailsImpl userDetails){
+        Optional<User> found = userRepository.findByUsername(userDetails.getUsername());
+        if (found.isPresent()) {
+            found.get().update(profileUpdateRequestDto);
+        } else {
+            throw new UserRequestException("해당 유저가 없습니다. id=" + userDetails.getUser().getId());
+        }
+        return new ProfileUpdateResponseDto(found.get());
     }
 }
 

@@ -1,5 +1,9 @@
 package com.sparta.instagram_clone_sv.web.controller;
 
+import com.sparta.instagram_clone_sv.security.UserDetailsImpl;
+import com.sparta.instagram_clone_sv.web.dto.ProfileUpdate.ProfileReadResponseDto;
+import com.sparta.instagram_clone_sv.web.dto.ProfileUpdate.ProfileUpdateRequestDto;
+import com.sparta.instagram_clone_sv.web.dto.ProfileUpdate.ProfileUpdateResponseDto;
 import com.sparta.instagram_clone_sv.web.dto.signUp.SignupRequestDto;
 import com.sparta.instagram_clone_sv.exception.UserRequestException;
 import com.sparta.instagram_clone_sv.domain.user.User;
@@ -9,11 +13,10 @@ import com.sparta.instagram_clone_sv.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -75,5 +78,20 @@ public class UserApiController {
             tu.add(token); //List형태 ["token" : {token}]
             return tu; // List형태 ["username" : {username}, "token" : {token}]
         }
+    }
+
+    //유저 프로필 조회(닉네임, 프로필사진)//
+    @GetMapping("/api/user")
+    public ProfileReadResponseDto readProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.readProfile(userDetails);
+    }
+
+    //유저 프로필 수정(닉네임, 프로필사진)//
+    @PutMapping("/api/user")
+    public ProfileUpdateResponseDto updateProfile(@Valid @RequestBody ProfileUpdateRequestDto profileUpdateRequestDto, Errors errors, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        if (errors.hasErrors()) {
+            userService.validateHandling(errors);
+        }
+        return userService.updateProfile(profileUpdateRequestDto, userDetails);
     }
 }
