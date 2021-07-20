@@ -6,6 +6,7 @@ import com.sparta.instagram_clone_sv.domain.follow.Follow;
 import com.sparta.instagram_clone_sv.domain.liked.Liked;
 import com.sparta.instagram_clone_sv.domain.Timestamped;
 import com.sparta.instagram_clone_sv.domain.userInfo.UserInfo;
+import com.sparta.instagram_clone_sv.web.dto.ProfileUpdate.ProfileUpdateRequestDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -92,5 +93,9 @@ public class User extends Timestamped {
         this.userInfo.followCountMinus();
     }
 
+    public void update(ProfileUpdateRequestDto profileUpdateRequestDto){
+        this.nickname = profileUpdateRequestDto.getNickname();
+        this.profileImageUrl = profileUpdateRequestDto.getProfileImageUrl();
+    }
 
 }
