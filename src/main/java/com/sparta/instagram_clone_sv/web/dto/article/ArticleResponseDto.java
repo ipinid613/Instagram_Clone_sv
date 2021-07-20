@@ -46,6 +46,7 @@ public class ArticleResponseDto {
         this.authorProfileImageUrl = article.getUser().getProfileImageUrl();
         this.articleId = article.getId();
         this.likeCount = (long)article.getLikedList().size();
+        this.isLiked = isLiked;
 
         for(Comment comment:article.getCommentList()){
             this.comments.add(new CommentResponseDto(comment));

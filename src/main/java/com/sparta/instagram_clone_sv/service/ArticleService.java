@@ -7,6 +7,7 @@ import com.sparta.instagram_clone_sv.domain.liked.LikedRepository;
 import com.sparta.instagram_clone_sv.domain.user.User;
 import com.sparta.instagram_clone_sv.domain.user.UserRepository;
 import com.sparta.instagram_clone_sv.exception.ArticleRequestException;
+import com.sparta.instagram_clone_sv.security.UserDetailsImpl;
 import com.sparta.instagram_clone_sv.web.dto.article.ArticleCreateRequestDto;
 import com.sparta.instagram_clone_sv.web.dto.article.ArticleResponseDto;
 import com.sparta.instagram_clone_sv.web.dto.article.ArticleUpdateRequestDto;
@@ -36,10 +37,10 @@ public class ArticleService {
     }
 
 
-    public List<ArticleResponseDto> readArticles(User user) {
+    public List<ArticleResponseDto> readArticles(UserDetailsImpl userDetails) {
         List<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc();
 
-        if (user == null) { // 로그인 하지 않은 사용자
+        if (userDetails == null) { // 로그인 하지 않은 사용자
             List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
 
             for (Article article : articles) {
@@ -48,6 +49,7 @@ public class ArticleService {
 
             return articleResponseDtoList;
         } else {
+            User user = userDetails.getUser();
             Optional<User> contextUser = userRepository.findById(user.getId());
             List<ArticleResponseDto> articleResponseDtoList = new ArrayList<>();
 
@@ -72,16 +74,17 @@ public class ArticleService {
     }
 
 
-    public ArticleResponseDto readArticle(Long articleId, User user) {
+    public ArticleResponseDto readArticle(Long articleId, UserDetailsImpl userDetails) {
         Optional<Article> article = articleRepository.findById(articleId);
 
-        if (user == null) {
+        if (userDetails == null) {
             if (article.isPresent()) {
                 return new ArticleResponseDto(article.get(), false);
             } else {
                 throw new ArticleRequestException("해당 게시글이 없습니다. id=" + articleId);
             }
         } else {
+            User user = userDetails.getUser();
             Optional<User> contextUser = userRepository.findById(user.getId());
 
             if (!contextUser.isPresent()) {
@@ -109,8 +112,9 @@ public class ArticleService {
     }
 
     @Transactional
-    public ArticleResponseDto updateArticle(Long articleId, ArticleUpdateRequestDto articleUpdateRequestDto, User user) {
+    public ArticleResponseDto updateArticle(Long articleId, ArticleUpdateRequestDto articleUpdateRequestDto, UserDetailsImpl userDetails) {
         Optional<Article> article = articleRepository.findById(articleId);
+        User user = userDetails.getUser();
         Optional<User> contextUser = userRepository.findById(user.getId());
 
         if (article.isPresent()) {
@@ -135,9 +139,9 @@ public class ArticleService {
     }
 
     @Transactional
-    public void deleteArticle(Long articleId, User user) {
+    public void deleteArticle(Long articleId, UserDetailsImpl userDetails) {
         Optional<Article> article = articleRepository.findById(articleId);
-
+        User user = userDetails.getUser();
         if (article.isPresent()) {
             if (article.get().getUser().getId().equals(user.getId())) {
                 articleRepository.delete(article.get());

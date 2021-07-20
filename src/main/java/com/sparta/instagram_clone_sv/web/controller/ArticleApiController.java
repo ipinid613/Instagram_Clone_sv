@@ -36,24 +36,25 @@ public class ArticleApiController {
     @ApiOperation("게시물 조회")
     @GetMapping("/api/articles")
     public List<ArticleResponseDto> readArticles(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        return articleService.readArticles(userDetails.getUser());
+
+        return articleService.readArticles(userDetails);
     }
 
     @ApiOperation("특정 게시물 조회")
     @GetMapping("/api/articles/{articleId}")
     public ArticleResponseDto readArticle(@PathVariable Long articleId, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return articleService.readArticle(articleId, userDetails.getUser());
+        return articleService.readArticle(articleId, userDetails);
     }
 
     @ApiOperation("특정 게시물 수정")
     @PutMapping("/api/articles/{articleId}")
     public ArticleResponseDto updateArticle(@PathVariable Long articleId, @RequestBody ArticleUpdateRequestDto articleUpdateRequestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return articleService.updateArticle(articleId, articleUpdateRequestDto,userDetails.getUser());
+        return articleService.updateArticle(articleId, articleUpdateRequestDto,userDetails);
     }
 
     @ApiOperation("특정 게시물 삭제")
     @DeleteMapping("/api/articles/{articleId}")
     public void deleteArticle(@PathVariable Long articleId , @AuthenticationPrincipal UserDetailsImpl userDetails){
-        articleService.deleteArticle(articleId,userDetails.getUser());
+        articleService.deleteArticle(articleId,userDetails);
     }
 }
