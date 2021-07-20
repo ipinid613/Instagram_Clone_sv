@@ -35,15 +35,14 @@ public class ArticleApiController {
 
     @ApiOperation("게시물 조회")
     @GetMapping("/api/articles")
-    public List<ArticleResponseDto> readArticles(){
-
-        return articleService.readArticles();
+    public List<ArticleResponseDto> readArticles(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return articleService.readArticles(userDetails.getUser());
     }
 
     @ApiOperation("특정 게시물 조회")
     @GetMapping("/api/articles/{articleId}")
-    public ArticleResponseDto readArticle(@PathVariable Long articleId){
-        return articleService.readArticle(articleId);
+    public ArticleResponseDto readArticle(@PathVariable Long articleId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return articleService.readArticle(articleId, userDetails.getUser());
     }
 
     @ApiOperation("특정 게시물 수정")

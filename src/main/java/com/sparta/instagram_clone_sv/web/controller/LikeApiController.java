@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LikeApiController {
 
-    private final LikedRepository likedRepository;
     private final LikedService likedService;
 
     @ApiOperation("라이크 누름")

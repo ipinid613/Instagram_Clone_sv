@@ -19,6 +19,7 @@ public class ArticleResponseDto {
     private final String author;
     private final String authorProfileImageUrl;
     private final Long articleId;
+    private Boolean isLiked;
 
     private final Long likeCount;
 
@@ -36,7 +37,7 @@ public class ArticleResponseDto {
 //        this.comments = comments;
 //    }
 
-    public ArticleResponseDto(Article article){
+    public ArticleResponseDto(Article article, boolean isLiked){
         this.createdAt = article.getCreatedAt();
         this.modifiedAt = article.getModifiedAt();
         this.imageUrl = article.getImageUrl();
