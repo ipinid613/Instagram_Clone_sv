@@ -1,5 +1,6 @@
 package com.sparta.instagram_clone_sv.web.controller;
 
+import com.sparta.instagram_clone_sv.exception.UserRequestException;
 import com.sparta.instagram_clone_sv.security.UserDetailsImpl;
 import com.sparta.instagram_clone_sv.service.FollowService;
 import io.swagger.annotations.Api;
@@ -20,6 +21,9 @@ public class FollowApiController {
     @ApiOperation("팔로우 누름")
     @PostMapping("/api/follow/{userId}")
     public Boolean followUser(@PathVariable Long userId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        if (userDetails.getUser().getId().equals(userId)){
+            throw new UserRequestException("본인을 팔로우할 수 없습니다.");
+        }
         return followService.toggleUser(userId, userDetails.getUser());
     }
 }

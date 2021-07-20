@@ -5,6 +5,7 @@ import com.sparta.instagram_clone_sv.domain.follow.Follow;
 import com.sparta.instagram_clone_sv.domain.follow.FollowRepository;
 import com.sparta.instagram_clone_sv.domain.user.User;
 import com.sparta.instagram_clone_sv.domain.user.UserRepository;
+import com.sparta.instagram_clone_sv.exception.UserRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,7 @@ public class FollowService {
         Optional<User> PreyUser = userRepository.findById(userId);
         Optional<User> HunterUser = userRepository.findById(user.getId());
         if (!HunterUser.isPresent()) {
-            throw new IllegalArgumentException("아니 이럴리가 없는데");
+            throw new UserRequestException("회원님의 계정을 찾을 수 없습니다.");
         }
 
         if (PreyUser.isPresent()) {
@@ -45,7 +46,7 @@ public class FollowService {
                     .build());
             return true;
         } else {
-            throw new IllegalArgumentException("해당 유저가 없습니다. userId=" + userId);
+            throw new UserRequestException("해당 유저가 없습니다. userId=" + userId);
         }
     }
 }
