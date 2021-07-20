@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,6 +52,7 @@ public class UserService {
 
 
     // 회원가입
+    @Transactional
     public void registerUser(@Valid @RequestBody SignupRequestDto signupRequestDto) {
         // 회원 닉네임(활동명) 입력
         String nickname = signupRequestDto.getNickname();
@@ -90,9 +92,12 @@ public class UserService {
         // 패스워드 인코딩
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
+        UserInfo emptyUserInfo = UserInfo.builder().build();
+
+        userInfoRepository.save(emptyUserInfo);
 
         /// 위의 조건을 다 통과한 경우에 한해 userRepository.save 가능함 ///
-        User user = new User(username, email, nickname, password, UserInfo.builder().build());
+        User user = new User(username, email, nickname, password, emptyUserInfo);
         userRepository.save(user);
     }
 }

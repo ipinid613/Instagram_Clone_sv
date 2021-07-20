@@ -55,7 +55,7 @@ public class User extends Timestamped {
     private final List<Follow> followeeList = new ArrayList<>(); //나를 팔로우 하는 유저들의 리스트
 
     @OneToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     private UserInfo userInfo;
 
     @Builder

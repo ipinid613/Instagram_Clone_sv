@@ -30,6 +30,7 @@ public class ArticleService {
     private final UserRepository userRepository;
 
 
+    @Transactional
     public ArticleResponseDto createArticle(ArticleCreateRequestDto articleCreateRequestDto, User user) {
         Article article = new Article(articleCreateRequestDto, user);
         articleRepository.save(article);
