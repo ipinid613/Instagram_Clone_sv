@@ -5,6 +5,7 @@ import com.sparta.instagram_clone_sv.domain.comment.Comment;
 import com.sparta.instagram_clone_sv.domain.follow.Follow;
 import com.sparta.instagram_clone_sv.domain.liked.Liked;
 import com.sparta.instagram_clone_sv.domain.Timestamped;
+import com.sparta.instagram_clone_sv.domain.userInfo.UserInfo;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -53,14 +54,43 @@ public class User extends Timestamped {
     @OneToMany(mappedBy = "followee",cascade = CascadeType.ALL)
     private final List<Follow> followeeList = new ArrayList<>(); //나를 팔로우 하는 유저들의 리스트
 
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private UserInfo userInfo;
+
     @Builder
-    public User(String username, String email, String nickname, String password) {
+    public User(String username, String email, String nickname, String password, UserInfo userInfo) {
         this.username = username;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
+        this.userInfo = userInfo;
 
         //Here should Default profile imageUrl
         this.profileImageUrl = null;
     }
+
+    // count++ for what he wrote count
+    public void hasWroteArticle(){
+        this.userInfo.articleCountPlus();
+    }
+    public void hasDeletedArticle(){
+        this.userInfo.articleCountMinus();
+    }
+
+    public void hasFollowed(){
+        this.userInfo.followerCountPlus();
+    }
+    public void hasUnFollowed(){
+        this.userInfo.followerCountMinus();
+    }
+
+    public void hasFollowing(){
+        this.userInfo.followCountPlus();
+    }
+    public void hasUnFollowing(){
+        this.userInfo.followCountMinus();
+    }
+
+
 }

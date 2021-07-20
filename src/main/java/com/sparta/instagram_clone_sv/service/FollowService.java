@@ -36,6 +36,10 @@ public class FollowService {
                     HunterUser.get().getFollowerList().remove(follow);
                     follow.disconnectFollowee();
                     follow.disconnectFollower();
+
+                    HunterUser.get().hasUnFollowing();
+                    PreyUser.get().hasUnFollowed();
+
                     followRepository.delete(follow);
                     return false;
                 }
@@ -44,6 +48,8 @@ public class FollowService {
                     .follower(HunterUser.get())
                     .followee(PreyUser.get())
                     .build());
+            HunterUser.get().hasFollowing();
+            PreyUser.get().hasFollowed();
             return true;
         } else {
             throw new UserRequestException("해당 유저가 없습니다. userId=" + userId);

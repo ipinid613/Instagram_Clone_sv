@@ -33,6 +33,9 @@ public class ArticleService {
     public ArticleResponseDto createArticle(ArticleCreateRequestDto articleCreateRequestDto, User user) {
         Article article = new Article(articleCreateRequestDto, user);
         articleRepository.save(article);
+        //contextUser = 실제 해당 User를 영속성 컨텍스트에 올림.
+        Optional<User> contextUser = userRepository.findById(user.getId());
+        contextUser.get().hasWroteArticle();
         return new ArticleResponseDto(article, false);
     }
 
@@ -142,9 +145,11 @@ public class ArticleService {
     public void deleteArticle(Long articleId, UserDetailsImpl userDetails) {
         Optional<Article> article = articleRepository.findById(articleId);
         User user = userDetails.getUser();
+        Optional<User> contextUser = userRepository.findById(user.getId());
         if (article.isPresent()) {
             if (article.get().getUser().getId().equals(user.getId())) {
                 articleRepository.delete(article.get());
+                contextUser.get().hasDeletedArticle();
             } else {
                 throw new ArticleRequestException("로그인 한 사용자와 게시물 작성자가 다릅니다.");
             }

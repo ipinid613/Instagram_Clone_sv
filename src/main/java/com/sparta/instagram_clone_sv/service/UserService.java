@@ -1,10 +1,13 @@
 package com.sparta.instagram_clone_sv.service;
 
+import com.sparta.instagram_clone_sv.domain.userInfo.UserInfo;
+import com.sparta.instagram_clone_sv.domain.userInfo.UserInfoRepository;
 import com.sparta.instagram_clone_sv.web.dto.signUp.SignupRequestDto;
 import com.sparta.instagram_clone_sv.exception.UserRequestException;
 import com.sparta.instagram_clone_sv.domain.user.User;
 import com.sparta.instagram_clone_sv.domain.user.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,18 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 import java.util.Optional;
 
+
+@RequiredArgsConstructor
 @Service
-@AllArgsConstructor
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
 
-
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     // 회원가입 시, 유효성 체크
     public void validateHandling(Errors errors) {
@@ -91,8 +90,9 @@ public class UserService {
         // 패스워드 인코딩
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
+
         /// 위의 조건을 다 통과한 경우에 한해 userRepository.save 가능함 ///
-        User user = new User(username, email, nickname, password);
+        User user = new User(username, email, nickname, password, UserInfo.builder().build());
         userRepository.save(user);
     }
 }
