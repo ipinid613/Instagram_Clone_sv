@@ -35,8 +35,9 @@ dependencies {
     compileOnly "com.fasterxml.jackson.core:jackson-databind:2.9.4"
     implementation 'org.jetbrains:annotations:20.1.0'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.5.0'
-    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.5.0'
+
+    // https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 }
 
 test {

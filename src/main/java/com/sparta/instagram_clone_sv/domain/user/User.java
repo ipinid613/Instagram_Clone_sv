@@ -68,7 +68,7 @@ public class User extends Timestamped {
         this.userInfo = userInfo;
 
         //Here should Default profile imageUrl
-        this.profileImageUrl = null;
+        this.profileImageUrl = "https://pbs.twimg.com/media/EhIO_LyVoAA2szZ.jpg";
     }
 
     // count++ for what he wrote count
