@@ -58,10 +58,13 @@ public class UserApiController {
             }
             Map<String,String>username =new HashMap<>();
             Map<String,String>token = new HashMap<>();
+            Map<String,String> profileImageUrl = new HashMap<>();
             List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
-            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "username" : {username}
             username.put("username",member.getUsername()); // "token" : {token}
+            profileImageUrl.put("profileImageUrl",member.getProfileImageUrl());
+            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "username" : {username}
             tu.add(username); //List형태 ["username" : {username}]
+            tu.add(profileImageUrl); // List형태 ["profileImageUrl" : {profileImageUrl}]
             tu.add(token); //List형태 ["token" : {token}]
             return tu; // List형태 ["username" : {username}, "token" : {token}]
         } else {
@@ -72,10 +75,13 @@ public class UserApiController {
             }
             Map<String,String>username =new HashMap<>();
             Map<String,String>token = new HashMap<>();
+            Map<String,String> profileImageUrl = new HashMap<>();
             List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
-            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "username" : {username}
             username.put("username",member.getUsername()); // "token" : {token}
+            profileImageUrl.put("profileImageUrl",member.getProfileImageUrl());
+            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "username" : {username}
             tu.add(username); //List형태 ["username" : {username}]
+            tu.add(profileImageUrl); // List형태 ["profileImageUrl" : {profileImageUrl}]
             tu.add(token); //List형태 ["token" : {token}]
             return tu; // List형태 ["username" : {username}, "token" : {token}]
         }
