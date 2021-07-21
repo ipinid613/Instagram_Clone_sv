@@ -1,5 +1,6 @@
 package com.sparta.instagram_clone_sv.service;
 
+import com.sparta.instagram_clone_sv.domain.follow.Follow;
 import com.sparta.instagram_clone_sv.domain.userInfo.UserInfo;
 import com.sparta.instagram_clone_sv.domain.userInfo.UserInfoRepository;
 import com.sparta.instagram_clone_sv.security.UserDetailsImpl;
@@ -10,6 +11,7 @@ import com.sparta.instagram_clone_sv.web.dto.signUp.SignupRequestDto;
 import com.sparta.instagram_clone_sv.exception.UserRequestException;
 import com.sparta.instagram_clone_sv.domain.user.User;
 import com.sparta.instagram_clone_sv.domain.user.UserRepository;
+import com.sparta.instagram_clone_sv.web.dto.user.UserSimpleResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -30,6 +35,47 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
+
+    //랜덤한 친구들 추천 받기 ( but 본인이 팔로우 하지 않은 사람들만 게시되야 하며, 본인은 제외되야 함)
+    @Transactional
+    public List<UserSimpleResponseDto> getRecommendedFriends(User user) {
+        User contextUser = userRepository.findById(user.getId()).get();
+
+        List<User> allUsers = userRepository.findAll();
+
+        Collections.shuffle(allUsers);
+
+        List<UserSimpleResponseDto> userSimpleResponseDtoList = new ArrayList<>();
+
+        int cur = 0;
+        int size = allUsers.size();
+        int first = 0;
+        int last = 5;
+        while (cur <= size - 1 && first <= last) {
+            User eachUser = allUsers.get(cur);
+            boolean isBreaked = false;
+
+            for (Follow follow : contextUser.getFollowerList()) {
+                if (eachUser.getId().equals(follow.getFollowee().getId())) {
+                    isBreaked = true;
+                    break;
+                }
+            }
+            if (isBreaked) {
+                cur++;
+            } else {
+                if(eachUser.getId().equals(contextUser.getId())){ // 본인은 제외
+                    cur++;
+                }else{
+                    userSimpleResponseDtoList.add(UserSimpleResponseDto.of(eachUser));
+                    cur++;
+                    first++;
+                }
+            }
+        }
+
+        return userSimpleResponseDtoList;
+    }
 
 
     // 회원가입 시, 유효성 체크
@@ -78,17 +124,17 @@ public class UserService {
         }
 
         // 패스워드 속에 유저명 중복 없애기
-        if(signupRequestDto.getPassword().contains(username) || username.contains(signupRequestDto.getPassword())) {
+        if (signupRequestDto.getPassword().contains(username) || username.contains(signupRequestDto.getPassword())) {
             errorMessage = "유저명을 포함한 비밀번호는 사용불가합니다.";
             throw new UserRequestException(errorMessage);
         }
         // 패스워드 속에 이메일 중복 없애기
-        if(signupRequestDto.getPassword().contains(email) || email.contains(signupRequestDto.getPassword())) {
+        if (signupRequestDto.getPassword().contains(email) || email.contains(signupRequestDto.getPassword())) {
             errorMessage = "이메일을 포함한 비밀번호는 사용불가합니다.";
             throw new UserRequestException(errorMessage);
         }
         // 패스워드 속에 닉네임 중복 없애기
-        if(signupRequestDto.getPassword().contains(nickname) || nickname.contains(signupRequestDto.getPassword())) {
+        if (signupRequestDto.getPassword().contains(nickname) || nickname.contains(signupRequestDto.getPassword())) {
             errorMessage = "닉네임을 포함한 비밀번호는 사용불가합니다.";
             throw new UserRequestException(errorMessage);
         }
@@ -106,9 +152,9 @@ public class UserService {
     }
 
     //프로필 수정페이지 진입//
-    public ProfileReadResponseDto readProfile(UserDetailsImpl userDetails){
+    public ProfileReadResponseDto readProfile(UserDetailsImpl userDetails) {
         Optional<User> found = userRepository.findByUsername(userDetails.getUsername());
-        if (found.isPresent()){
+        if (found.isPresent()) {
             return new ProfileReadResponseDto(found.get());
         } else {
             throw new UserRequestException("해당 유저가 없습니다. id=" + userDetails.getUser().getId());
@@ -117,7 +163,7 @@ public class UserService {
 
     //프로필 수정//
     @Transactional
-    public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, UserDetailsImpl userDetails){
+    public ProfileUpdateResponseDto updateProfile(ProfileUpdateRequestDto profileUpdateRequestDto, UserDetailsImpl userDetails) {
         Optional<User> found = userRepository.findByUsername(userDetails.getUsername());
         if (found.isPresent()) {
             found.get().update(profileUpdateRequestDto);
@@ -126,5 +172,6 @@ public class UserService {
         }
         return new ProfileUpdateResponseDto(found.get());
     }
+
 }
 

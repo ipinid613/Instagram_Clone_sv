@@ -12,6 +12,7 @@ import com.sparta.instagram_clone_sv.security.JwtTokenProvider;
 import com.sparta.instagram_clone_sv.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -81,6 +82,7 @@ public class UserApiController {
     }
 
     //유저 프로필 조회(닉네임, 프로필사진)//
+    @ApiOperation("유저의 프로필 조회 (메인페이지에서 오른쪽에 띄우는 것에 대한 api는 아님)")
     @GetMapping("/api/user")
     public ProfileReadResponseDto readProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.readProfile(userDetails);
@@ -94,4 +96,5 @@ public class UserApiController {
         }
         return userService.updateProfile(profileUpdateRequestDto, userDetails);
     }
+
 }
