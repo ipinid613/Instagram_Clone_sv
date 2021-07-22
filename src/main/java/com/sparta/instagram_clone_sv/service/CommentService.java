@@ -41,6 +41,7 @@ public class CommentService {
                     comment.getContent(),
                     comment.getCreatedAt(),
                     comment.getModifiedAt(),
+                    comment.getUser().getUsername(),
                     comment.getUser().getNickname(),
                     comment.getUser().getProfileImageUrl()
             );

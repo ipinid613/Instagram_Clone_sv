@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class CommentResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
+    private final String username;
     private final String commentAuthor;
     private final String commentAuthorProfileImageUrl;
     private final Long articleId;
@@ -29,16 +30,20 @@ public class CommentResponseDto {
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
         this.modifiedAt = comment.getModifiedAt();
+        this.username = comment.getUser().getUsername();
         this.commentAuthor = comment.getUser().getNickname();
         this.commentAuthorProfileImageUrl = comment.getUser().getProfileImageUrl();
     }
 
-    public CommentResponseDto(Long articleId, Long commentId, String content, LocalDateTime createdAt, LocalDateTime modifiedAt, String commentAuthor, String commentAuthorProfileImageUrl){
+    public CommentResponseDto(Long articleId, Long commentId, String content,
+                              LocalDateTime createdAt, LocalDateTime modifiedAt,
+                              String username, String commentAuthor, String commentAuthorProfileImageUrl){
         this.articleId = articleId;
         this.commentId = commentId;
         this.content = content;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+        this.username = username;
         this.commentAuthor = commentAuthor;
         this.commentAuthorProfileImageUrl = commentAuthorProfileImageUrl;
     }
