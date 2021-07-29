@@ -32,7 +32,7 @@ public class FollowService {
         if (PreyUser.isPresent()) {
             for (Follow follow :PreyUser.get().getFolloweeList()) { // follow 받는 사람의 팔로워 리스트 중 하나
                 if(follow.getFollower().getId().equals(HunterUser.get().getId())){ // 그 리스트에 이미 헌터유저(팔로우 요청 보내는사람)이 있다면
-                    PreyUser.get().getFolloweeList().remove(follow); // 언팔
+                    PreyUser.get().getFolloweeList().remove(follow); // 언팔.
                     HunterUser.get().getFollowerList().remove(follow);
                     follow.disconnectFollowee();
                     follow.disconnectFollower();
