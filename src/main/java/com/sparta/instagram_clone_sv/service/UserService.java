@@ -50,7 +50,7 @@ public class UserService {
         int cur = 0;
         int size = allUsers.size();
         int first = 0;
-        int last = 5;
+        int last = 4;
         while (cur <= size - 1 && first <= last) {
             User eachUser = allUsers.get(cur);
             boolean isBreaked = false;
