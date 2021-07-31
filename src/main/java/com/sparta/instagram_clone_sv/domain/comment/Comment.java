@@ -14,6 +14,8 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
+//댓글 수정, 삭제 API는 있으나, 클라이언트 사이드에서 사용하지 않는 api이므로 실제 서버로 요청 안 옴.
+// 따라서 @DynamicUpdate 사용 XXXX
 public class Comment extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +25,11 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private Article article;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private User user;
 

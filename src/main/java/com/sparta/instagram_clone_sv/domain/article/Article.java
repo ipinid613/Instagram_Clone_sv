@@ -15,9 +15,12 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@NoArgsConstructor
-@DynamicUpdate
+//FetchType.EAGER | LAZY = 즉시로딩, 지연로딩에 관한 부분.
+//JPA 기본 페치 전략 : xToOne -> EAGER, xToMany -> LAZY
+
+@Getter // getId, getContent 등을 자동으로 핸들링
+@NoArgsConstructor // 기본생성자 핸들링
+@DynamicUpdate // update 요청 시, 전체 컬럼에 대한 쿼리를 생성하는 것 대신 변경 요청하는 부분에 대한 쿼리만 생성함
 @Entity
 public class Article extends Timestamped {
     @Id
@@ -30,22 +33,16 @@ public class Article extends Timestamped {
     @Column(nullable = false)
     private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private User user;
 
-    @OneToMany(mappedBy = "article",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = false) // fetchtype eager로 해야지 디버그 가능해용 아닌가 아님말고...
+    @OneToMany(mappedBy = "article",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false)
     private final List<Liked> likedList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Comment> commentList = new ArrayList<>();
 
-    @Builder
-    public Article(String content, String imageUrl, User user) {
-        this.content = content;
-        this.imageUrl = imageUrl;
-        this.user = user;
-    }
 
     public Article(ArticleCreateRequestDto articleCreateRequestDto, User user){
         this.content = articleCreateRequestDto.getContent();

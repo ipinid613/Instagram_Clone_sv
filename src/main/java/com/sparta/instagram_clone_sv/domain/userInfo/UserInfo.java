@@ -17,7 +17,7 @@ public class UserInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "userInfo")
+    @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER)
     private User user;
 
     @Column(nullable = false)

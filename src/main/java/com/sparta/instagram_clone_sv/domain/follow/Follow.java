@@ -19,11 +19,11 @@ public class Follow extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private User follower; // 팔로우를 하는 사람
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private User followee; // 팔로우를 받는 사람
 

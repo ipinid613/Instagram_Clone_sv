@@ -40,22 +40,22 @@ public class User extends Timestamped {
     @Column(nullable = true)
     private String profileImageUrl;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Liked> likedList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Article> articleList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "follower",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Follow> followerList = new ArrayList<>(); //내가 팔로우를 하는 유저들의 리스트
 
-    @OneToMany(mappedBy = "followee",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "followee",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<Follow> followeeList = new ArrayList<>(); //나를 팔로우 하는 유저들의 리스트
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = true)
     private UserInfo userInfo;
 
