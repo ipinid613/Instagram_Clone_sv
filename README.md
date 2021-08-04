@@ -235,7 +235,7 @@
 ![image](https://user-images.githubusercontent.com/85334989/128237637-aecd57f9-537e-483a-9191-cc27c3a4c8ff.png)
 
 #### 6. DB 설계
-- ERD(Entity Relationship Diagram
+- ERD(Entity Relationship Diagram)
 
 
 ![DB](https://images.velog.io/images/ipinid613/post/66de4847-92aa-4a59-ac54-344a6c13caf0/image.png)
