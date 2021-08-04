@@ -7,6 +7,7 @@
   - [기능 구현 목표](#3-기능-구현-목표)
   - [API 설계](#4-API-설계)
   - [예외처리 설계](#5-예외처리-설계)
+  - [DB 설계](#6-DB-설계)
 - [개발 결과](#개발-결과)
   - [구현한 기능](#1구현한-기능)
   - [실제 서비스 모습](#2-실제-서비스-모습)
@@ -233,6 +234,11 @@
 ![image](https://user-images.githubusercontent.com/85334989/128237602-52ed0732-9f48-4f71-b380-88ddf175d280.png)
 ![image](https://user-images.githubusercontent.com/85334989/128237637-aecd57f9-537e-483a-9191-cc27c3a4c8ff.png)
 
+#### 6. DB 설계
+- ERD(Entity Relationship Diagram
+
+
+![DB](https://images.velog.io/images/ipinid613/post/66de4847-92aa-4a59-ac54-344a6c13caf0/image.png)
 
 
 ---
