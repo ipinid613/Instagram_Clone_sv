@@ -370,6 +370,26 @@ public class SpringFoxConfig{
 
 #### 2. 실제 서비스 모습
 [시연 영상 YouTube 이동](https://www.youtube.com/watch?v=GtaLFIjpkXI)
+- 회원가입
+
+![회원가입](https://images.velog.io/images/ipinid613/post/4d590e8c-6baa-4d2e-94fc-96d362987915/image.png)
+
+- 로그인
+
+![로그인](https://images.velog.io/images/ipinid613/post/7a03eca5-1306-4803-97ea-1197e4522674/image.png)
+
+- 메인 페이지
+
+![메인 페이지 1](https://images.velog.io/images/ipinid613/post/96d375de-0cd6-40e3-bde2-9f22de6475cd/image.png)
+![메인 페이지 2](https://images.velog.io/images/ipinid613/post/3fcbbedb-b960-494e-be09-d39ec80701b6/image.png)
+
+- 마이 페이지
+
+![마이 페이지](https://images.velog.io/images/ipinid613/post/72e38eb6-3aa7-417a-8ae7-cf9d3bb33417/image.png)
+
+- 프로필 편집
+
+![프로필 편집](https://images.velog.io/images/ipinid613/post/3d86bf3b-c5ca-40b5-afd4-25f4319f2d15/image.png)
 
 #### 3. 회고 및 피드백
 - 클론코딩이라는 주제와 맞게 실제 서비스 중인 인스타그램과 최대한 비슷해보이고, 기능도 작동하는 웹페이지를 제작하는 것이 목표였습니다.<br></br>
