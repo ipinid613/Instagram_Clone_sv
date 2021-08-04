@@ -230,6 +230,9 @@
 
 #### 5. 예외처리 설계
 [instagram_clone_에러메시지 종합.pdf](https://github.com/ipinid613/Instagram_Clone_sv/files/6922328/instagram_clone_.pdf)
+![image](https://user-images.githubusercontent.com/85334989/128237602-52ed0732-9f48-4f71-b380-88ddf175d280.png)
+![image](https://user-images.githubusercontent.com/85334989/128237637-aecd57f9-537e-483a-9191-cc27c3a4c8ff.png)
+
 
 
 ---
