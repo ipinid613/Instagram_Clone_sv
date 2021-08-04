@@ -31,9 +31,6 @@ import java.util.Map;
 public class UserApiController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final PasswordEncoder passwordEncoder;
 
 
     // 회원 가입 요청 처리
@@ -50,41 +47,7 @@ public class UserApiController {
     // 로그인
     @PostMapping("/api/login")
     public List<Map<String,String>> login(@RequestBody Map<String, String> user) {
-        if (user.get("usernameOrEmail").contains("@")) {
-            User member = userRepository.findByEmail(user.get("usernameOrEmail")).
-                    orElseThrow(() -> new UserRequestException("입력하신 이메일로 회원을 찾을 수 없습니다."));
-            if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
-                throw new UserRequestException("잘못된 비밀번호입니다.");
-            }
-            Map<String,String>username =new HashMap<>();
-            Map<String,String>token = new HashMap<>();
-            Map<String,String> profileImageUrl = new HashMap<>();
-            List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
-            username.put("username",member.getUsername()); //  "username" : {username}
-            profileImageUrl.put("profileImageUrl",member.getProfileImageUrl());
-            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "token" : {token}
-            tu.add(username); //List형태 ["username" : {username}]
-            tu.add(profileImageUrl); // List형태 ["profileImageUrl" : {profileImageUrl}]
-            tu.add(token); //List형태 ["token" : {token}]
-            return tu; // List형태 ["username" : {username}, "token" : {token}]
-        } else {
-            User member = userRepository.findByUsername(user.get("usernameOrEmail"))
-                    .orElseThrow(() -> new UserRequestException("입력하신 유저명으로 회원을 찾을 수 없습니다."));
-            if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
-                throw new UserRequestException("잘못된 비밀번호입니다.");
-            }
-            Map<String,String>username =new HashMap<>();
-            Map<String,String>token = new HashMap<>();
-            Map<String,String> profileImageUrl = new HashMap<>();
-            List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
-            username.put("username",member.getUsername()); // "token" : {token}
-            profileImageUrl.put("profileImageUrl",member.getProfileImageUrl());
-            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "username" : {username}
-            tu.add(username); //List형태 ["username" : {username}]
-            tu.add(profileImageUrl); // List형태 ["profileImageUrl" : {profileImageUrl}]
-            tu.add(token); //List형태 ["token" : {token}]
-            return tu; // List형태 ["username" : {username}, "token" : {token}]
-        }
+        return userService.login(user);
     }
 
     //유저 프로필 조회(닉네임, 프로필사진)//

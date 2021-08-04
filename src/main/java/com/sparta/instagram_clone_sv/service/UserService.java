@@ -3,6 +3,7 @@ package com.sparta.instagram_clone_sv.service;
 import com.sparta.instagram_clone_sv.domain.follow.Follow;
 import com.sparta.instagram_clone_sv.domain.userInfo.UserInfo;
 import com.sparta.instagram_clone_sv.domain.userInfo.UserInfoRepository;
+import com.sparta.instagram_clone_sv.security.JwtTokenProvider;
 import com.sparta.instagram_clone_sv.security.UserDetailsImpl;
 import com.sparta.instagram_clone_sv.web.dto.ProfileUpdate.ProfileReadResponseDto;
 import com.sparta.instagram_clone_sv.web.dto.ProfileUpdate.ProfileUpdateRequestDto;
@@ -23,10 +24,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @RequiredArgsConstructor
@@ -35,11 +33,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     //랜덤한 친구들 추천 받기 ( but 본인이 팔로우 하지 않은 사람들만 게시되야 하며, 본인은 제외되야 함)
     @Transactional
     public List<UserSimpleResponseDto> getRecommendedFriends(User user) {
-        User contextUser = userRepository.findById(user.getId()).get();
+        User contextUser = userRepository.findById(user.getId()).orElse(null);
 
         List<User> allUsers = userRepository.findAll();
 
@@ -55,6 +54,7 @@ public class UserService {
             User eachUser = allUsers.get(cur);
             boolean isBreaked = false;
 
+            assert contextUser != null;
             for (Follow follow : contextUser.getFollowerList()) {
                 if (eachUser.getId().equals(follow.getFollowee().getId())) {
                     isBreaked = true;
@@ -100,6 +100,44 @@ public class UserService {
     //        return validatorResult; // 유효성검사 통과 시 {msg : null} 반환하고 db에 저장됨.
     //    }
 
+    // 로그인
+    public List<Map<String,String>> login(Map<String, String> user){
+        if (user.get("usernameOrEmail").contains("@")) {
+            User member = userRepository.findByEmail(user.get("usernameOrEmail")).
+                    orElseThrow(() -> new UserRequestException("입력하신 이메일로 회원을 찾을 수 없습니다."));
+            if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
+                throw new UserRequestException("잘못된 비밀번호입니다.");
+            }
+            Map<String,String>username =new HashMap<>();
+            Map<String,String>token = new HashMap<>();
+            Map<String,String> profileImageUrl = new HashMap<>();
+            List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
+            username.put("username",member.getUsername()); //  "username" : {username}
+            profileImageUrl.put("profileImageUrl",member.getProfileImageUrl());
+            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "token" : {token}
+            tu.add(username); //List형태 ["username" : {username}]
+            tu.add(profileImageUrl); // List형태 ["profileImageUrl" : {profileImageUrl}]
+            tu.add(token); //List형태 ["token" : {token}]
+            return tu; // List형태 ["username" : {username}, "token" : {token}]
+        } else {
+            User member = userRepository.findByUsername(user.get("usernameOrEmail"))
+                    .orElseThrow(() -> new UserRequestException("입력하신 유저명으로 회원을 찾을 수 없습니다."));
+            if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
+                throw new UserRequestException("잘못된 비밀번호입니다.");
+            }
+            Map<String,String>username =new HashMap<>();
+            Map<String,String>token = new HashMap<>();
+            Map<String,String> profileImageUrl = new HashMap<>();
+            List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
+            username.put("username",member.getUsername()); // "token" : {token}
+            profileImageUrl.put("profileImageUrl",member.getProfileImageUrl());
+            token.put("token",jwtTokenProvider.createToken(member.getUsername(), member.getEmail())); // "username" : {username}
+            tu.add(username); //List형태 ["username" : {username}]
+            tu.add(profileImageUrl); // List형태 ["profileImageUrl" : {profileImageUrl}]
+            tu.add(token); //List형태 ["token" : {token}]
+            return tu; // List형태 ["username" : {username}, "token" : {token}]
+        }
+    }
 
     // 회원가입
     @Transactional

@@ -8,6 +8,7 @@ import com.sparta.instagram_clone_sv.domain.liked.LikedRepository;
 import com.sparta.instagram_clone_sv.domain.user.User;
 
 
+import com.sparta.instagram_clone_sv.exception.ArticleRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +42,7 @@ public class LikedService {
                     .build());
             return true;
         } else {
-            throw new IllegalArgumentException("해당 게시글이 없습니다. id=" + articleId);
+            throw new ArticleRequestException("해당 게시글이 없습니다. id=" + articleId);
         }
 
 
